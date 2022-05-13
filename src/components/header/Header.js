@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-
-import { getRemainingTimeUntilMsTimestamp } from "../../utils/countdownTimeUtils";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -29,34 +27,25 @@ const Wrapper = styled.div`
   }
 `;
 
-const DEFAULT_REMAINING_TIME = {
-  seconds: "00",
-  minutes: "00",
-  hours: "00",
-};
-
-function Header({ timestamp }) {
-  const [remainingTime, setRemainingTime] = useState(DEFAULT_REMAINING_TIME);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      updateRemainingTime(timestamp);
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, [timestamp]);
-
-  function updateRemainingTime(countdown) {
-    setRemainingTime(getRemainingTimeUntilMsTimestamp(countdown));
+function Header({ time }) {
+  if (time.hours === "00" && time.minutes === "00" && time.seconds === "00") {
+    return (
+      <Wrapper>
+        <div>
+          <span>Time's Up!</span>
+        </div>
+      </Wrapper>
+    );
   }
 
   return (
     <Wrapper>
       <div>
-        <span>{remainingTime.hours}</span>
+        <span>{time.hours}</span>
         <span>hours</span>
-        <span>{remainingTime.minutes}</span>
+        <span>{time.minutes}</span>
         <span>minutes</span>
-        <span>{remainingTime.seconds}</span>
+        <span>{time.seconds}</span>
         <span>seconds</span>
       </div>
     </Wrapper>
